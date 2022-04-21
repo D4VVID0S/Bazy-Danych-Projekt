@@ -96,10 +96,12 @@ VALUES(1, 'Pilka do koszykowki',  30.00),
 (19, 'Kolo dmuchane', 10.00),
 (20, 'Rekawki do nauki plywania', 8.00);
 
--- zmienić g_id na gear_id gdzie jest potrzebny czyli do tablicy gear_type
-CREATE index gear_id on gear(g_id);
--- to samo co na gorze dla poniższej linii
+CREATE index g_id on gear(g_id);
+
 create index gear_item on gear(item);
+
+-- kolumna nie jest primary key wiec musi byc indeksowana
+CREATE index price on gear(price);
 
 CREATE TABLE gear_type
 (
@@ -138,7 +140,7 @@ CREATE TABLE rent_order
     cust_id int, foreign key (cust_id) references customer(cust_id),
     item varchar(30), foreign key (item) references gear(item),
     quantity int not null,
-    g_id int, FOREIGN KEY (g_id) REFERENCES gear(g_id)
+    g_id int not null, FOREIGN KEY (g_id) REFERENCES gear(g_id)
 );
 
 INSERT INTO rent_order(ord_id, cust_id, item, quantity, g_id)
@@ -158,3 +160,37 @@ VALUES(1, 1, 'Czepek na basen', 1, 13),
 (14, 19, 'Deska do plywania', 12, 18),
 (15, 9, 'Kask na narty/snowboard', 16, 10),
 (16, 7, 'Rekawki do nauki plywania', 4, 20);
+
+-- Procedura Total_price_order
+SELECT quantity, price,
+quantity * price as 'Total_Amount'
+FROM rent_order, gear
+WHERE rent_order.g_id = gear.g_id;
+
+-- Procedura Rent_card_2020
+SELECT * from rent_card
+WHERE creat_date >= '2020-01-01 00:00:00' AND exp_date <= '2020-12-31 23:59:59';
+
+-- Procedura Rent_card_2021
+SELECT * from rent_card
+WHERE creat_date >= '2021-01-01 00:00:00' AND exp_date <= '2021-12-31 23:59:59';
+
+-- Procedura Rent_card_2022
+SELECT * from rent_card
+WHERE creat_date >= '2022-01-01 00:00:00' AND exp_date <= '2022-12-31 23:59:59';
+
+-- where
+SELECT customer.name,
+gear_type.category,
+rent_order.item
+FROM customer, gear_type, rent_order
+WHERE customer.cust_id = rent_order.cust_id
+AND rent_order.g_id = gear_type.g_id;
+
+-- natural join
+
+-- inner join
+
+-- left outer join
+
+-- right outer join

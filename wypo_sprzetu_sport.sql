@@ -5,7 +5,15 @@ CREATE DATABASE wypo_sprzetu_sport;
 USE wypo_sprzetu_sport;
 
 CREATE TABLE customer
-(cust_id int AUTO_INCREMENT not null, PRIMARY KEY (cust_id), name  varchar(50) not null, surname varchar(50) not null, address varchar(50) not null, house_nr varchar(10) not null, post_code varchar(6) not null, city varchar(30) not null);
+(
+    cust_id int AUTO_INCREMENT not null, PRIMARY KEY (cust_id),
+    name varchar(50) not null,
+    surname varchar(50) not null,
+    address varchar(50) not null,
+    house_nr varchar(10) not null,
+    post_code varchar(6) not null,
+    city varchar(30) not null
+);
 
 INSERT INTO customer(cust_id, name, surname, address, house_nr, post_code, city)
 VALUES(1, 'Alan', 'Duda', 'Lomnicka', '63', '91-726', 'Lodz'),
@@ -33,7 +41,12 @@ VALUES(1, 'Alan', 'Duda', 'Lomnicka', '63', '91-726', 'Lodz'),
 (23, 'Bogna', 'Wojciechowska', 'Kosciuszki Tadeusza', '76', '40-691', 'Katowice');
 
 CREATE TABLE rent_card
-(card_id int AUTO_INCREMENT not null, PRIMARY KEY (card_id), cust_id int, creat_date datetime not null, exp_date datetime not null , foreign key (cust_id) references customer(cust_id));
+(
+    card_id int AUTO_INCREMENT not null, PRIMARY KEY (card_id),
+    cust_id int,
+    creat_date datetime not null,
+    exp_date datetime not null, foreign key (cust_id) references customer(cust_id)
+);
 
 INSERT INTO rent_card(card_id, cust_id, creat_date, exp_date)
 VALUES(1, 1, '2020-05-12 10:20:11', '2020-05-18 10:20:11'),
@@ -54,7 +67,12 @@ VALUES(1, 1, '2020-05-12 10:20:11', '2020-05-18 10:20:11'),
 (16, 7, '2022-04-07 11:39:10', '2022-04-10 11:39:10');
 
 CREATE TABLE gear
-(g_id int AUTO_INCREMENT not null, PRIMARY KEY (g_id), item varchar(30) not null, price decimal(6, 2));
+(
+    g_id int AUTO_INCREMENT not null,
+    PRIMARY KEY (g_id),
+    item varchar(30) not null,
+    price decimal(6, 2)
+);
 
 INSERT INTO gear(g_id, item, price)
 VALUES(1, 'Pilka do koszykowki',  30.00),
@@ -84,7 +102,13 @@ CREATE index gear_id on gear(g_id);
 create index gear_item on gear(item);
 
 CREATE TABLE gear_type
-(id_gtype int AUTO_INCREMENT not null, PRIMARY KEY (id_gtype), g_id int, category varchar(30) not null, item varchar(30) not null, foreign key (item, g_id) references gear(item, g_id));
+(
+    id_gtype int AUTO_INCREMENT not null, PRIMARY KEY (id_gtype),
+    g_id int,
+    category varchar(30) not null,
+    item varchar(30) not null,
+    foreign key (item, g_id) references gear(item, g_id)
+);
 
 INSERT INTO gear_type(id_gtype, g_id, category, item)
 VALUES(1, 1, 'Koszykowka', 'Pilka do koszykowki'),
@@ -109,22 +133,28 @@ VALUES(1, 1, 'Koszykowka', 'Pilka do koszykowki'),
 (20, 20, 'Basen', 'Rekawki do nauki plywania');
 
 CREATE TABLE rent_order
-(ord_id int AUTO_INCREMENT not null, PRIMARY KEY (ord_id), cust_id int, foreign key (cust_id) references customer(cust_id), item varchar(30), foreign key (item) references gear(item), quantity int not null);
+(
+    ord_id int AUTO_INCREMENT not null, PRIMARY KEY (ord_id),
+    cust_id int, foreign key (cust_id) references customer(cust_id),
+    item varchar(30), foreign key (item) references gear(item),
+    quantity int not null,
+    g_id int, FOREIGN KEY (g_id) REFERENCES gear(g_id)
+);
 
-INSERT INTO rent_order(ord_id, cust_id, item, quantity)
-VALUES(1, 1, 'Czepek na basen', 1),
-(2, 4, 'Meski stroj kompielowy', 2),
-(3, 2, 'Okularki', 7),
-(4, 10, 'Pilka do nogi', 35),
-(5, 4, 'Stroj do nogi', 4),
-(6, 9, 'Korki do nogi', 8),
-(7, 3, 'Snowboard', 3),
-(8, 17, 'Kask na narty/snowboard', 19),
-(9, 2, 'Buty na snowboard', 5),
-(10, 13, 'Czepek na basen', 69),
-(11, 13, 'Damski stroj kompielowy', 13),
-(12, 17, 'Makaron basenowy', 20), 
-(13, 1, 'Pilka do koszykowki', 3),
-(14, 19, 'Deska do plywania', 12),
-(15, 9, 'Kask na narty/snowboard', 16),
-(16, 7, 'Rekawki do nauki plywania', 4);
+INSERT INTO rent_order(ord_id, cust_id, item, quantity, g_id)
+VALUES(1, 1, 'Czepek na basen', 1, 13),
+(2, 4, 'Meski stroj kompielowy', 2, 14),
+(3, 2, 'Okularki', 7, 16),
+(4, 10, 'Pilka do nogi', 35, 4),
+(5, 4, 'Stroj do nogi', 4, 5),
+(6, 9, 'Korki do nogi', 8, 6),
+(7, 3, 'Snowboard', 3, 8),
+(8, 17, 'Kask na narty/snowboard', 19, 10),
+(9, 2, 'Buty na snowboard', 5, 11),
+(10, 13, 'Czepek na basen', 69, 13),
+(11, 13, 'Damski stroj kompielowy', 13, 15),
+(12, 17, 'Makaron basenowy', 20, 17), 
+(13, 1, 'Pilka do koszykowki', 3, 1),
+(14, 19, 'Deska do plywania', 12, 18),
+(15, 9, 'Kask na narty/snowboard', 16, 10),
+(16, 7, 'Rekawki do nauki plywania', 4, 20);

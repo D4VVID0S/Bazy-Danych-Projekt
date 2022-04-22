@@ -187,10 +187,20 @@ FROM customer, gear_type, rent_order
 WHERE customer.cust_id = rent_order.cust_id
 AND rent_order.g_id = gear_type.g_id;
 
--- natural join
-
--- inner join
-
+-- natural join - tworzy się lekki iloczyn kartezjański
+SELECT * FROM customer
+NATURAL JOIN rent_card
+NATURAL JOIN rent_order
+WHERE customer.cust_id = rent_card.cust_id
+AND customer.cust_id = rent_order.cust_id
+AND rent_card.cust_id = rent_order.cust_id;
+-- inner join - tworzy się lekki iloczyn kartezjański
+SELECT * FROM customer
+INNER JOIN rent_card
+INNER JOIN rent_order
+ON customer.cust_id = rent_card.cust_id
+AND customer.cust_id = rent_order.cust_id
+AND rent_card.cust_id = rent_order.cust_id;
 -- left outer join
 
 -- right outer join

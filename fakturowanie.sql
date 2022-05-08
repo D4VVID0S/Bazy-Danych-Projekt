@@ -5,27 +5,60 @@ CREATE DATABASE fakturowanie;
 USE fakturowanie;
 
 CREATE TABLE wojewodztwa 
-(kod_w	CHAR(3) not null,
- PRIMARY KEY (kod_w),
- wojewodztwo VARCHAR(30) not null
+(
+	kod_w CHAR(3) not null, PRIMARY KEY (kod_w),
+ 	wojewodztwo VARCHAR(30) not null
 );
 
 INSERT INTO wojewodztwa (kod_w, wojewodztwo)
-VALUES ('dol', 'dolnośląskie'), ('kuj', 'kujawsko-pomorskie'), ('lub','lubelskie'), ('lue','lubuskie'), ('lod','łódzkie'), ('mal','małopolskie'), ('maz','mazowieckie'), ('opo','opolskie'), ('pod','podkarpackie'), ('pol','podlaskie'), ('pom','pomorskie'), ('sla','śląskie'), ('swi','świętokrzyskie'), ('war','warmińsko-mazurskie'), ('wie','wielkopolskie'), ('zac','zachodniopomorskie');
+VALUES
+('dol', 'dolnośląskie'),
+('kuj', 'kujawsko-pomorskie'),
+('lub','lubelskie'),
+('lue','lubuskie'),
+('lod','łódzkie'),
+('mal','małopolskie'),
+('maz','mazowieckie'),
+('opo','opolskie'),
+('pod','podkarpackie'),
+('pol','podlaskie'),
+('pom','pomorskie'),
+('sla','śląskie'),
+('swi','świętokrzyskie'),
+('war','warmińsko-mazurskie'),
+('wie','wielkopolskie'),
+('zac','zachodniopomorskie');
 
 CREATE TABLE miasta 
-(kod_pocztowy VARCHAR(6) not null, primary key(kod_pocztowy),
- kod_w char(3) not null,
+(
+	kod_pocztowy VARCHAR(6) not null, primary key(kod_pocztowy),
+ 	kod_w char(3) not null,
 	foreign key (kod_w) references wojewodztwa(kod_w),
- miasto varchar(30) not null
+ 	miasto varchar(30) not null
 );
 
 INSERT INTO miasta (kod_pocztowy, kod_w, miasto)
-VALUES ('50-100', 'dol', 'Wrocław'), ('61-772', 'wie', 'Poznań'), ('00-229', 'maz', 'Warszawa'), ('31-010', 'mal', 'Kraków'), ('80-324', 'pom', 'Gdańsk');
+VALUES
+('50-100', 'dol', 'Wrocław'),
+('61-772', 'wie', 'Poznań'),
+('00-229', 'maz', 'Warszawa'),
+('31-010', 'mal', 'Kraków'),
+('80-324', 'pom', 'Gdańsk');
 
-CREATE TABLE kontrahenci(id_k int AUTO_INCREMENT not null, PRIMARY KEY (id_k), nazwa VARCHAR(50) not null, nazwa_skr VARCHAR(20) not null, ulica VARCHAR(30), nr VARCHAR(6), nr2 VARCHAR(6), kod_pocztowy VARCHAR(6), foreign key (kod_pocztowy) references miasta(kod_pocztowy));
+CREATE TABLE kontrahenci
+(
+	id_k int AUTO_INCREMENT not null, PRIMARY KEY (id_k),
+	nazwa VARCHAR(50) not null,
+	nazwa_skr VARCHAR(20) not null,
+	ulica VARCHAR(30),
+	nr VARCHAR(6),
+	nr2 VARCHAR(6),
+	kod_pocztowy VARCHAR(6), foreign key (kod_pocztowy) references miasta(kod_pocztowy)
+);
 
-INSERT INTO `kontrahenci` (`id_k`, `nazwa`, `nazwa_skr`, `ulica`, `nr`, `nr2`, `kod_pocztowy`) VALUES ('1', 'Polski Koncern Olejowy', 'PKOl', 'Dolna', '2', NULL, '00-229'),
+INSERT INTO `kontrahenci` (`id_k`, `nazwa`, `nazwa_skr`, `ulica`, `nr`, `nr2`, `kod_pocztowy`)
+VALUES
+('1', 'Polski Koncern Olejowy', 'PKOl', 'Dolna', '2', NULL, '00-229'),
 ('2','Kogutek Sp. z o.o.','Kogutek','Prawoślazowa','2',6,'00-229'),
 ('3','Mirabelka s.a.','Mirabelka','Miłosna','56',NULL,'00-229'),
 ('4','Party Keeper','Party Keeper','Niewąska','23',NULL,'00-229'),

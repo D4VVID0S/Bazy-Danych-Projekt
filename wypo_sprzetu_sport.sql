@@ -100,26 +100,27 @@ CREATE TABLE rent_order
     ord_id int AUTO_INCREMENT not null, PRIMARY KEY (ord_id),
     cust_id int, foreign key (cust_id) references customer(cust_id),
     quantity int not null,
-    g_id int not null, FOREIGN KEY (g_id) REFERENCES gear(g_id)
+    g_id int not null, FOREIGN KEY (g_id) REFERENCES gear(g_id),
+    card_id int not null, FOREIGN KEY (card_id) REFERENCES rent_card(card_id)
 );
-INSERT INTO rent_order(cust_id, quantity, g_id)
+INSERT INTO rent_order(cust_id, quantity, g_id, card_id)
 VALUES
-(1, 1, 13),
-(4, 2, 14),
-(2, 7, 16),
-(10, 35, 4),
-(4, 4, 5),
-(9, 8, 6),
-(3, 3, 8),
-(17, 19, 10),
-(2, 5, 11),
-(13, 69, 13),
-(13, 13, 15),
-(17, 20, 17), 
-(1, 3, 1),
-(19, 12, 18),
-(9, 16, 10),
-(7, 4, 20);
+(1, 1, 13, 1),
+(4, 2, 14, 2),
+(2, 7, 16, 3),
+(10, 35, 4, 4),
+(4, 4, 5, 5),
+(9, 8, 6, 6),
+(3, 3, 8, 7),
+(17, 19, 10, 8),
+(2, 5, 11, 9),
+(13, 69, 13, 10),
+(13, 13, 15, 11),
+(17, 20, 17, 12), 
+(1, 3, 1, 13),
+(19, 12, 18, 14),
+(9, 16, 10, 15),
+(7, 4, 20, 16);
 DROP TABLE IF EXISTS logi;
 CREATE TABLE logi 
 (

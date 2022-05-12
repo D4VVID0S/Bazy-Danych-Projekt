@@ -129,6 +129,12 @@ CREATE TABLE logi
     czas DATETIME, 
     PRIMARY KEY (id_l)
 );
+
+-- Indeksy
+ALTER TABLE `wypo_sprzetu_sport`.`gear` DROP INDEX `Products`, ADD UNIQUE `Products` (`item`, `category`) USING BTREE;
+ALTER TABLE `wypo_sprzetu_sport`.`customer` DROP INDEX `Person`, ADD UNIQUE `Person` (`name`, `surname`) USING BTREE;
+ALTER TABLE `wypo_sprzetu_sport`.`rent_card` DROP INDEX `Date_Of_Use`, ADD UNIQUE `Date_Of_Use` (`creat_date`, `exp_date`) USING BTREE;
+
 -- TRIGGERY CUSTOMER --
 CREATE TRIGGER `BEFORE_INSERT_CUSTOMER` BEFORE INSERT ON `customer`
  FOR EACH ROW BEGIN
@@ -278,12 +284,15 @@ VALUES ('Zmodyfikowano rekord w tabeli Rent Order', now());
 END
 
 -- Procedura Total_price_order
+DELIMITER $$Dodano
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Total_price_order`()
 BEGIN
 SELECT ord_id, cust_id, item, quantity, price,
 quantity * price as 'Total_Price'
 FROM rent_order, gear
 WHERE rent_order.g_id = gear.g_id;
-END
+END$$
+DELIMITER ;
 -- Procedura Rent_card_2020
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `2020_RENT_CARDS`()
